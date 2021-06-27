@@ -1,23 +1,20 @@
-import logo from './logo.svg';
-import './App.css';
+import styles from "./App.module.css";
+import Button from "./components/Button/Button";
+import QuestionaireForm from "./views/QuestionaireForm/QuestionaireForm";
+import { useState } from "react";
 
 function App() {
+  const [questionaires, setQuestionaire] = useState(0);
+  const addQuestion = () => {
+    setQuestionaire(questionaires + 1);
+    console.log(questionaires);
+  };
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className={styles.App}>
+      {[...Array(questionaires)].map((_, i) => {
+        return <QuestionaireForm key={i} id={i} />;
+      })}
+      <Button onClick={addQuestion} />
     </div>
   );
 }

@@ -1,0 +1,15 @@
+.new-answer{
+  margin-top: 10px;
+  border: none;
+  border-bottom: 1px solid rgb(203, 203, 203);
+  background-color: rgb(249, 250, 252);
+}
+.new-answer::placeholder {
+  font-style: italic;
+}
+.new-answer:focus,
+.new-answer:focus-visible,
+.new-answer:focus-within {
+  outline: none;
+  border-bottom: 1px solid rgb(14, 104, 249);
+}

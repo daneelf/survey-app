@@ -1,0 +1,33 @@
+span {
+  color: rgb(14, 104, 249);
+  font-size: 14px;
+  font-weight: bold;
+}
+.question {
+  display: flex;
+  align-items: baseline;
+    border: 1px solid rgb(191, 200, 213);
+    font-weight: normal;
+    box-shadow: 0px 4px 6px 0px rgba(191, 200, 213, 0.5);
+    border-radius: 6px;
+    margin-bottom: 10px;
+    padding: 8px;
+    height:32px;
+  }
+  
+  .question:focus,
+  .question:focus-visible,
+  .question:focus-within {
+    outline: none;
+    border: 1px solid rgb(14, 104, 249);
+  }
+
+  .question-input {
+    border: none;
+  }
+
+  .question-input:focus,
+  .question-input:focus-visible,
+  .question-input:focus-within {
+    outline: none;
+  }

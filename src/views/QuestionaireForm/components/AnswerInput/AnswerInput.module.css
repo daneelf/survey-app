@@ -1,0 +1,12 @@
+.answer {
+  border: none;
+  border-bottom: 1px solid rgb(203, 203, 203);
+  background-color: rgb(255, 255, 255);
+}
+
+.answer:focus,
+.answer:focus-visible,
+.answer:focus-within {
+  outline: none;
+  border-bottom: 1px solid rgb(14, 104, 249);
+}
