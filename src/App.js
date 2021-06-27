@@ -7,7 +7,6 @@ function App() {
   const [questionaires, setQuestionaire] = useState(0);
   const addQuestion = () => {
     setQuestionaire(questionaires + 1);
-    console.log(questionaires);
   };
   return (
     <div className={styles.App}>
