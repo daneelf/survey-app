@@ -10,13 +10,25 @@ function App() {
 
   const addQuestion = () => {
     setQuestionaire(questionaires + 1);
-    setQuestionsData([...questionsData, {prompt: "", answers :[]}])
+    setQuestionsData([...questionsData, { prompt: "", answers: [] }]);
   };
 
+  const handleRemoveQuestionForm = (index) => {
+    const newQuestions = [...questionsData];
+    newQuestions.splice(index, 1);
+    setQuestionsData(newQuestions);
+  };
+  
   return (
     <div className={styles.App}>
-      {[...Array(questionaires)].map((_, i) => {
-        return <QuestionaireForm key={i} formId={i} />;
+      {questionsData?.map((_, i) => {
+        return (
+          <QuestionaireForm
+            key={i}
+            formId={i}
+            removeQuestion={() => handleRemoveQuestionForm(i)}
+          />
+        );
       })}
       <Button onClick={addQuestion} />
     </div>

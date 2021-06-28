@@ -5,7 +5,7 @@ import Answer from "./components/AnswerInput/AnswerInput";
 import NewAnswerInput from "./components/NewAnswerInput/NewAnswerInput";
 import { useQuestionsData } from "../../context/LocalContext";
 
-const QuestionaireForm = ({ formId }) => {
+const QuestionaireForm = ({ formId ,removeQuestion}) => {
   const [questionsData, setQuestionsData] = useQuestionsData();
   const [answers, setAnswers] = useState([]);
 
@@ -34,7 +34,7 @@ const QuestionaireForm = ({ formId }) => {
     }
   };
 
-  const handleAddQuestion = (e) => {
+  const handleAddQuestionTitle = (e) => {
     const questions = [...questionsData];
     questions[formId].prompt = e.target.value;
     setQuestionsData(questions);
@@ -49,16 +49,17 @@ const QuestionaireForm = ({ formId }) => {
     setQuestionsData(questions);
   };
 
-  const handleRemoveQuestion = () => {
-    const questions = [...questionsData];
-    
-  };
+
 
   const handleRemoveAnswer = () => {};
 
   return (
     <form className={styles.card}>
-      <QuestionInput formId={formId} onChange={(e) => handleAddQuestion(e)} />
+      <QuestionInput
+        formId={formId}
+        onChange={(e) => handleAddQuestionTitle(e)}
+        removeQuestion={() => removeQuestion()}
+      />
       {answers.map((answer, i) => (
         <Answer
           answerId={i}
