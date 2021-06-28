@@ -1,23 +1,59 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import styles from "./QuestionaireForm.module.css";
 import QuestionInput from "./components/QuestionInput/QuestionInput";
 import Answer from "./components/AnswerInput/AnswerInput";
-
 import NewAnswerInput from "./components/NewAnswerInput/NewAnswerInput";
-const QuestionaireForm = ({ id }) => {
+import { useQuestionsData } from "../../context/LocalContext";
+
+const QuestionaireForm = ({ formId }) => {
+  const [questionsData, setQuestionsData] = useQuestionsData();
   const [answers, setAnswers] = useState([]);
-  const handleAddNewAnswer = (e) => {
+
+  const handleAddNewAnswer = useCallback(
+    (value) => {
+      const questions = [...questionsData];
+      setAnswers([...answers, value]);
+      questions[formId].answers.push(value);
+      setQuestionsData(questions);
+      console.log(
+        "questionsData[formId].answers",
+        questionsData[formId].answers
+      );
+    },
+    [answers, formId, questionsData, setQuestionsData]
+  );
+
+  const onBlur = useCallback(
+    (e) => {
+      if(!answers.includes(e.target.value)){
+        handleAddNewAnswer(e.target.value);
+      }
+    },
+    [answers, handleAddNewAnswer]
+  );
+
+  const onKeyDown = (e) => {
     if (e.keyCode === 13) {
-      console.log("llalal");
-      setAnswers([...answers, e.target.value]);
+      handleAddNewAnswer(e.target.value);
     }
+  };
+
+  const handleAddQuestion = (e) => {
+    const questions = [...questionsData];
+    questions[formId].prompt = e.target.value;
+    setQuestionsData(questions);
   };
 
   return (
     <form className={styles.card}>
-      <QuestionInput id={id} />
-      {answers.map((answer, i) => <Answer key={i} id={i} value={answer} />)}
-      <NewAnswerInput onKeyDown={(e) => handleAddNewAnswer(e)} />
+      <QuestionInput formId={formId} onChange={(e) => handleAddQuestion(e)} />
+      {answers.map((answer, i) => (
+        <Answer key={i} value={answer} />
+      ))}
+      <NewAnswerInput
+        onBlur={(e) => onBlur(e)}
+        onKeyDown={(e) => onKeyDown(e)}
+      />
     </form>
   );
 };

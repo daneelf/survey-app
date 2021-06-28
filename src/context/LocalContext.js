@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 
 export const LocalContext = React.createContext({});
 
@@ -13,7 +13,7 @@ export const useQuestionsData = () => {
 };
 
 export const LocalContextProvider = (props) => {
-  const [questionsData, setQuestionsData] = React.useState({});
+  const [questionsData, setQuestionsData] = useState([]);
   const value = React.useMemo(() => [questionsData, setQuestionsData], [
     questionsData,
   ]);

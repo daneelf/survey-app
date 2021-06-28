@@ -10,11 +10,13 @@ function App() {
 
   const addQuestion = () => {
     setQuestionaire(questionaires + 1);
+    setQuestionsData([...questionsData, {prompt: "", answers :[]}])
   };
+
   return (
     <div className={styles.App}>
       {[...Array(questionaires)].map((_, i) => {
-        return <QuestionaireForm key={i} id={i} />;
+        return <QuestionaireForm key={i} formId={i} />;
       })}
       <Button onClick={addQuestion} />
     </div>

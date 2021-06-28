@@ -1,12 +1,13 @@
 import React from "react";
 import Input from "../../../../components/Input/Input";
-import styles from './QuestionInput.module.css';
+import styles from "./QuestionInput.module.css";
 
-const QuestionInput = ({id,placeholder}) => {
+const QuestionInput = ({ formId,onChange}) => {
   return (
     <div className={styles["question"]}>
-      <span>Q{id + 1}</span>
+      <span>Q{formId + 1}</span>
       <Input
+        onChange={onChange}
         variant="question"
         additionalStyles={styles["question-input"]}
         placeholder={"Enter your question"}
