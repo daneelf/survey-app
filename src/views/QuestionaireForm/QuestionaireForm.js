@@ -25,7 +25,7 @@ const QuestionaireForm = ({ formId }) => {
 
   const onBlur = useCallback(
     (e) => {
-      if(!answers.includes(e.target.value)){
+      if (!answers.includes(e.target.value)) {
         handleAddNewAnswer(e.target.value);
       }
     },
@@ -44,11 +44,24 @@ const QuestionaireForm = ({ formId }) => {
     setQuestionsData(questions);
   };
 
+  const handleUpdateAnswer = (e,i) => {
+    const questions = [...questionsData];
+    const answersData = [...answers]
+    questions[formId].answers[i] = e.target.value;
+    answersData[i] = e.target.value;
+    setAnswers([answersData]);
+    setQuestionsData(questions);
+  }
+
   return (
     <form className={styles.card}>
       <QuestionInput formId={formId} onChange={(e) => handleAddQuestion(e)} />
       {answers.map((answer, i) => (
-        <Answer key={i} value={answer} />
+        <Answer
+          key={i}
+          value={answer}
+          onChange={(e) => handleUpdateAnswer(e,i)}
+        />
       ))}
       <NewAnswerInput
         onBlur={(e) => onBlur(e)}
