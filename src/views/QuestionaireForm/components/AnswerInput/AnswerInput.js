@@ -1,18 +1,35 @@
-import React from 'react';
+import React from "react";
 import Input from "../../../../components/Input/Input";
-import styles from './AnswerInput.module.css';
+import styles from "./AnswerInput.module.css";
+import { FaTrash, FaChevronDown, FaChevronUp } from "react-icons/fa";
 
-const AnswerInput = ({value, onChange}) => {
+const AnswerInput = ({ answerId, value, onChange }) => {
+  const id = (answerId + 1).toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false})
 
-    return (
-        <Input
+  return (
+    <div className={styles["answer"]}>
+      <span className={styles["answer-id"]}>{id}</span>
+      <Input
+      fullWidth
         variant="answer"
-        additionalStyles={styles["answer"]}
+        additionalStyles={styles["answer-input"]}
         onChange={onChange}
         value={value}
       />
-    );
-};
+      <div className={styles["answer-actions"]}>
+        <span className={styles.icon}>
+          <FaChevronDown />
+        </span>
+        <span className={styles.icon}>
+          <FaChevronUp />
+        </span>
 
+        <span className={styles.icon}>
+          <FaTrash />
+        </span>
+      </div>
+    </div>
+  );
+};
 
 export default AnswerInput;

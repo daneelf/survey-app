@@ -61,6 +61,7 @@ const QuestionaireForm = ({ formId }) => {
       <QuestionInput formId={formId} onChange={(e) => handleAddQuestion(e)} />
       {answers.map((answer, i) => (
         <Answer
+          answerId={i}
           key={i}
           value={answer}
           onChange={(e) => handleUpdateAnswer(e, i)}

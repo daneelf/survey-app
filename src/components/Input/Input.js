@@ -26,7 +26,6 @@ const Input = ({
       onKeyDown={onKeyDown}
       onBlur={onBlur}
       onFocus={onFocus}
-      defalutValue={defalutValue}
       value={value}
     />
   );

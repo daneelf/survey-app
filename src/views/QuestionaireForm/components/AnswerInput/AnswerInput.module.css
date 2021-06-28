@@ -1,12 +1,33 @@
 .answer {
-  border: none;
+  display: flex;
+  align-items: baseline;
   border-bottom: 1px solid rgb(203, 203, 203);
   background-color: rgb(255, 255, 255);
 }
+.answer-id {
+  color: rgb(143, 152, 169);
+}
+.answer-input {
+  border: none;
+  background-color: rgb(255, 255, 255);
 
-.answer:focus,
-.answer:focus-visible,
-.answer:focus-within {
+}
+
+.answer-input:focus,
+.answer-input:focus-visible,
+.answer-input:focus-within {
   outline: none;
   border-bottom: 1px solid rgb(14, 104, 249);
+}
+
+.answer-actions {
+  background-color: rgb(255, 255, 255);
+
+  display: flex;
+  width: 15%;
+  justify-content: space-around;
+}
+.icon {
+  cursor: pointer;
+  color: rgb(92, 103, 118);
 }
