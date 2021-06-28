@@ -15,17 +15,13 @@ const QuestionaireForm = ({ formId }) => {
       setAnswers([...answers, value]);
       questions[formId].answers.push(value);
       setQuestionsData(questions);
-      console.log(
-        "questionsData[formId].answers",
-        questionsData[formId].answers
-      );
     },
     [answers, formId, questionsData, setQuestionsData]
   );
 
   const onBlur = useCallback(
     (e) => {
-      if (!answers.includes(e.target.value)) {
+      if (!answers.includes(e.target.value) && e.target.value.length > 0) {
         handleAddNewAnswer(e.target.value);
       }
     },
@@ -33,7 +29,7 @@ const QuestionaireForm = ({ formId }) => {
   );
 
   const onKeyDown = (e) => {
-    if (e.keyCode === 13) {
+    if (e.keyCode === 13 && e.target.value.length > 0) {
       handleAddNewAnswer(e.target.value);
     }
   };
@@ -44,14 +40,21 @@ const QuestionaireForm = ({ formId }) => {
     setQuestionsData(questions);
   };
 
-  const handleUpdateAnswer = (e,i) => {
+  const handleUpdateAnswer = (e, i) => {
     const questions = [...questionsData];
-    const answersData = [...answers]
+    const answersData = [...answers];
     questions[formId].answers[i] = e.target.value;
     answersData[i] = e.target.value;
     setAnswers([answersData]);
     setQuestionsData(questions);
-  }
+  };
+
+  const handleRemoveQuestion = () => {
+    const questions = [...questionsData];
+    
+  };
+
+  const handleRemoveAnswer = () => {};
 
   return (
     <form className={styles.card}>
@@ -60,7 +63,7 @@ const QuestionaireForm = ({ formId }) => {
         <Answer
           key={i}
           value={answer}
-          onChange={(e) => handleUpdateAnswer(e,i)}
+          onChange={(e) => handleUpdateAnswer(e, i)}
         />
       ))}
       <NewAnswerInput

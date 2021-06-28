@@ -2,7 +2,7 @@ import React from "react";
 import Input from "../../../../components/Input/Input";
 import styles from "./NewAnswerInput.module.css";
 
-const NewAnswerInput = ({ id, placeholder, onKeyDown,onBlur ,onFocus}) => {
+const NewAnswerInput = ({ id, value, placeholder, onKeyDown,onBlur ,onFocus}) => {
   return (
     <Input
       variant="question"
