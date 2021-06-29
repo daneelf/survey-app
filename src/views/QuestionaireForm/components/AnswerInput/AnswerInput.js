@@ -4,6 +4,7 @@ import styles from "./AnswerInput.module.css";
 import { FaTrash, FaChevronDown, FaChevronUp } from "react-icons/fa";
 import { UP, DOWN } from "../../../../constants";
 import { useQuestionsData } from "../../../../context/LocalContext";
+import cs from "classnames";
 
 const AnswerInput = ({
   formId,
@@ -18,7 +19,13 @@ const AnswerInput = ({
     minimumIntegerDigits: 2,
     useGrouping: false,
   });
-
+  const disabledUpIcon = cs({
+    [styles["icon-disabled"]]: answerId === 0,
+  });
+  const disableDownIcon = cs({
+    [styles["icon-disabled"]]:
+    answerId === questionsData[formId].answers.length - 1,
+  });
   return (
     <div className={styles["answer"]}>
       <span className={styles["answer-id"]}>{id}</span>
@@ -32,12 +39,18 @@ const AnswerInput = ({
       <div className={styles["answer-actions"]}>
         <span className={styles.icon}>
           <FaChevronDown
-            onClick={() => reorderAnswer([...questionsData[formId].answers], answerId, DOWN)}
+            className={disableDownIcon}
+            onClick={() =>
+              reorderAnswer([...questionsData[formId].answers], answerId, DOWN)
+            }
           />
         </span>
         <span className={styles.icon}>
           <FaChevronUp
-            onClick={() => reorderAnswer([...questionsData[formId].answers], answerId, UP)}
+            className={disabledUpIcon}
+            onClick={() =>
+              reorderAnswer([...questionsData[formId].answers], answerId, UP)
+            }
           />
         </span>
 

@@ -42,3 +42,9 @@ span {
   cursor: pointer;
   color: rgb(92, 103, 118);
 }
+
+.icon-disabled {
+  opacity: 0.6;
+  pointer-events: none;
+  cursor: not-allowed;
+}
