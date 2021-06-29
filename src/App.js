@@ -47,7 +47,10 @@ function App() {
   };
 
   return (
-    <div className={styles.App}>
+    <div className={styles.list}>
+      {questionsData.length === 0 && 
+        <div className={styles['empty-list']}>Click the button to add a new question.</div>
+      }
       {questionsData?.map((_, i) => {
         return (
           <QuestionaireForm
