@@ -5,11 +5,11 @@ import { useState } from "react";
 import { useQuestionsData } from "./context/LocalContext";
 
 function App() {
-  const [questionaires, setQuestionaire] = useState(0);
+  const [questionaireFormCount, setQuestionaireFormCount] = useState(0);
   const [questionsData, setQuestionsData] = useQuestionsData();
 
   const addQuestion = () => {
-    setQuestionaire(questionaires + 1);
+    setQuestionaireFormCount(questionaireFormCount + 1);
     setQuestionsData([...questionsData, { prompt: "", answers: [] }]);
   };
 
@@ -18,7 +18,7 @@ function App() {
     newQuestions.splice(index, 1);
     setQuestionsData(newQuestions);
   };
-  
+
   return (
     <div className={styles.App}>
       {questionsData?.map((_, i) => {

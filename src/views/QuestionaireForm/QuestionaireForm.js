@@ -1,31 +1,30 @@
-import React, { useState, useCallback } from "react";
+import React, { useCallback } from "react";
 import styles from "./QuestionaireForm.module.css";
 import QuestionInput from "./components/QuestionInput/QuestionInput";
 import Answer from "./components/AnswerInput/AnswerInput";
 import NewAnswerInput from "./components/NewAnswerInput/NewAnswerInput";
 import { useQuestionsData } from "../../context/LocalContext";
 
-const QuestionaireForm = ({ formId ,removeQuestion}) => {
+const QuestionaireForm = ({ formId, removeQuestion }) => {
   const [questionsData, setQuestionsData] = useQuestionsData();
-  const [answers, setAnswers] = useState([]);
 
   const handleAddNewAnswer = useCallback(
     (value) => {
       const questions = [...questionsData];
-      setAnswers([...answers, value]);
       questions[formId].answers.push(value);
       setQuestionsData(questions);
     },
-    [answers, formId, questionsData, setQuestionsData]
+    [formId, questionsData, setQuestionsData]
   );
 
   const onBlur = useCallback(
     (e) => {
+      const answers =  questionsData[formId].answers;
       if (!answers.includes(e.target.value) && e.target.value.length > 0) {
         handleAddNewAnswer(e.target.value);
       }
     },
-    [answers, handleAddNewAnswer]
+    [formId, handleAddNewAnswer, questionsData]
   );
 
   const onKeyDown = (e) => {
@@ -42,16 +41,16 @@ const QuestionaireForm = ({ formId ,removeQuestion}) => {
 
   const handleUpdateAnswer = (e, i) => {
     const questions = [...questionsData];
-    const answersData = [...answers];
     questions[formId].answers[i] = e.target.value;
-    answersData[i] = e.target.value;
-    setAnswers([answersData]);
     setQuestionsData(questions);
   };
 
+  const handleRemoveAnswer = (i) => {
+    const questions = [...questionsData];
+    questions[formId].answers.splice(i, 1);
+    setQuestionsData(questions);
+  };
 
-
-  const handleRemoveAnswer = () => {};
 
   return (
     <form className={styles.card}>
@@ -60,14 +59,16 @@ const QuestionaireForm = ({ formId ,removeQuestion}) => {
         onChange={(e) => handleAddQuestionTitle(e)}
         removeQuestion={() => removeQuestion()}
       />
-      {answers.map((answer, i) => (
+      {questionsData[formId].answers?.map((answer, i) => (
         <Answer
           answerId={i}
           key={i}
           value={answer}
           onChange={(e) => handleUpdateAnswer(e, i)}
+          removeAnswer={() => handleRemoveAnswer(i)}
         />
       ))}
+
       <NewAnswerInput
         onBlur={(e) => onBlur(e)}
         onKeyDown={(e) => onKeyDown(e)}
