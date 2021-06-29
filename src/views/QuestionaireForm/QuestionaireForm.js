@@ -5,7 +5,7 @@ import Answer from "./components/AnswerInput/AnswerInput";
 import NewAnswerInput from "./components/NewAnswerInput/NewAnswerInput";
 import { useQuestionsData } from "../../context/LocalContext";
 
-const QuestionaireForm = ({ formId, removeQuestion }) => {
+const QuestionaireForm = ({ formId, removeQuestion,reorderQuestion }) => {
   const [questionsData, setQuestionsData] = useQuestionsData();
 
   const handleAddNewAnswer = useCallback(
@@ -50,7 +50,7 @@ const QuestionaireForm = ({ formId, removeQuestion }) => {
     questions[formId].answers.splice(i, 1);
     setQuestionsData(questions);
   };
-
+  
 
   return (
     <form className={styles.card}>
@@ -58,6 +58,8 @@ const QuestionaireForm = ({ formId, removeQuestion }) => {
         formId={formId}
         onChange={(e) => handleAddQuestionTitle(e)}
         removeQuestion={() => removeQuestion()}
+        reorderQuestion={reorderQuestion}
+        value={questionsData?.[formId]?.prompt}
       />
       {questionsData[formId].answers?.map((answer, i) => (
         <Answer

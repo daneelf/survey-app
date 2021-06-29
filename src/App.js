@@ -19,6 +19,33 @@ function App() {
     setQuestionsData(newQuestions);
   };
 
+  const UP = -1;
+  const DOWN = 1;
+
+  const handleReorderQuestions = (index, direction) => {
+    console.log("lalala");
+    console.log(direction);
+    const items = [...questionsData];
+    const position = index;
+    console.log(position);
+    if (position < 0) {
+      throw new Error("Given item not found.");
+    } else if (
+      (direction === UP && position === 0) ||
+      (direction === DOWN && position === items.length - 1)
+    ) {
+      return;
+    }
+
+    const item = { ...items[position] };
+    const newItems = items.filter(
+      (i, index) => items[index].prompt !== items[position].prompt
+    );
+
+    newItems.splice(position + direction, 0, item);
+    setQuestionsData(newItems);
+  };
+
   return (
     <div className={styles.App}>
       {questionsData?.map((_, i) => {
@@ -27,6 +54,7 @@ function App() {
             key={i}
             formId={i}
             removeQuestion={() => handleRemoveQuestionForm(i)}
+            reorderQuestion={handleReorderQuestions}
           />
         );
       })}
