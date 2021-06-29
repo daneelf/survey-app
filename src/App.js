@@ -3,6 +3,7 @@ import Button from "./components/Button/Button";
 import QuestionaireForm from "./views/QuestionaireForm/QuestionaireForm";
 import { useState } from "react";
 import { useQuestionsData } from "./context/LocalContext";
+import { reorder } from "./helpers/reorder";
 
 function App() {
   const [questionaireFormCount, setQuestionaireFormCount] = useState(0);
@@ -19,31 +20,10 @@ function App() {
     setQuestionsData(newQuestions);
   };
 
-  const UP = -1;
-  const DOWN = 1;
-
-  const handleReorderQuestions = (index, direction) => {
-    console.log("lalala");
-    console.log(direction);
-    const items = [...questionsData];
-    const position = index;
-    console.log(position);
-    if (position < 0) {
-      throw new Error("Given item not found.");
-    } else if (
-      (direction === UP && position === 0) ||
-      (direction === DOWN && position === items.length - 1)
-    ) {
-      return;
-    }
-
-    const item = { ...items[position] };
-    const newItems = items.filter(
-      (i, index) => index !== position
-    );
-    newItems.splice(position + direction, 0, item);
-    setQuestionsData(newItems);
-  };
+  const handleReorderQuestions = (items, index, direction) => {
+    const newOrderedItems = reorder(items, index, direction)
+    setQuestionsData(newOrderedItems);
+  }
 
   return (
     <div className={styles.list}>

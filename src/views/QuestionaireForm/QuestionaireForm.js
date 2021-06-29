@@ -4,6 +4,7 @@ import QuestionInput from "./components/QuestionInput/QuestionInput";
 import Answer from "./components/AnswerInput/AnswerInput";
 import NewAnswerInput from "./components/NewAnswerInput/NewAnswerInput";
 import { useQuestionsData } from "../../context/LocalContext";
+import {reorder} from "../../helpers/reorder";
 
 const QuestionaireForm = ({ formId, removeQuestion,reorderQuestion }) => {
   const [questionsData, setQuestionsData] = useQuestionsData();
@@ -53,6 +54,13 @@ const QuestionaireForm = ({ formId, removeQuestion,reorderQuestion }) => {
     setQuestionsData(questions);
   };
   
+  const handleReorderAnswers = (items, index, direction) => {
+    const newOrderedItems = reorder(items, index, direction)
+    const questions = [...questionsData];
+
+    questions[formId].answers = newOrderedItems;
+    setQuestionsData(questions);
+  }
 
   return (
     <form className={styles.card}>
@@ -65,11 +73,13 @@ const QuestionaireForm = ({ formId, removeQuestion,reorderQuestion }) => {
       />
       {questionsData[formId].answers?.map((answer, i) => (
         <Answer
+          formId={formId}
           answerId={i}
           key={i}
           value={answer}
           onChange={(e) => handleUpdateAnswer(e, i)}
           removeAnswer={() => handleRemoveAnswer(i)}
+          reorderAnswer={handleReorderAnswers}
         />
       ))}
 

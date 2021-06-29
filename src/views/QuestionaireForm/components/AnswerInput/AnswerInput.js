@@ -2,8 +2,18 @@ import React from "react";
 import Input from "../../../../components/Input/Input";
 import styles from "./AnswerInput.module.css";
 import { FaTrash, FaChevronDown, FaChevronUp } from "react-icons/fa";
+import { UP, DOWN } from "../../../../constants";
+import { useQuestionsData } from "../../../../context/LocalContext";
 
-const AnswerInput = ({ answerId, value, onChange, removeAnswer }) => {
+const AnswerInput = ({
+  formId,
+  answerId,
+  value,
+  onChange,
+  removeAnswer,
+  reorderAnswer,
+}) => {
+  const [questionsData] = useQuestionsData();
   const id = (answerId + 1).toLocaleString("en-US", {
     minimumIntegerDigits: 2,
     useGrouping: false,
@@ -21,10 +31,14 @@ const AnswerInput = ({ answerId, value, onChange, removeAnswer }) => {
       />
       <div className={styles["answer-actions"]}>
         <span className={styles.icon}>
-          <FaChevronDown />
+          <FaChevronDown
+            onClick={() => reorderAnswer([...questionsData[formId].answers], answerId, DOWN)}
+          />
         </span>
         <span className={styles.icon}>
-          <FaChevronUp />
+          <FaChevronUp
+            onClick={() => reorderAnswer([...questionsData[formId].answers], answerId, UP)}
+          />
         </span>
 
         <span className={styles.icon}>
