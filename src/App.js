@@ -39,9 +39,8 @@ function App() {
 
     const item = { ...items[position] };
     const newItems = items.filter(
-      (i, index) => items[index].prompt !== items[position].prompt
+      (i, index) => index !== position
     );
-
     newItems.splice(position + direction, 0, item);
     setQuestionsData(newItems);
   };

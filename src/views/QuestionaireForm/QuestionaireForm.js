@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import styles from "./QuestionaireForm.module.css";
 import QuestionInput from "./components/QuestionInput/QuestionInput";
 import Answer from "./components/AnswerInput/AnswerInput";
@@ -7,12 +7,14 @@ import { useQuestionsData } from "../../context/LocalContext";
 
 const QuestionaireForm = ({ formId, removeQuestion,reorderQuestion }) => {
   const [questionsData, setQuestionsData] = useQuestionsData();
+  const [value,setValue] = useState("");
 
   const handleAddNewAnswer = useCallback(
     (value) => {
       const questions = [...questionsData];
       questions[formId].answers.push(value);
       setQuestionsData(questions);
+      setValue("")
     },
     [formId, questionsData, setQuestionsData]
   );
@@ -72,6 +74,8 @@ const QuestionaireForm = ({ formId, removeQuestion,reorderQuestion }) => {
       ))}
 
       <NewAnswerInput
+        onChange={(e) => setValue(e.target.value)}
+        value={value}
         onBlur={(e) => onBlur(e)}
         onKeyDown={(e) => onKeyDown(e)}
       />
