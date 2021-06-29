@@ -4,25 +4,25 @@ import QuestionInput from "./components/QuestionInput/QuestionInput";
 import Answer from "./components/AnswerInput/AnswerInput";
 import NewAnswerInput from "./components/NewAnswerInput/NewAnswerInput";
 import { useQuestionsData } from "../../context/LocalContext";
-import {reorder} from "../../helpers/reorder";
+import { reorder } from "../../helpers/reorder";
 
-const QuestionaireForm = ({ formId, removeQuestion,reorderQuestion }) => {
+const QuestionaireForm = ({ formId, removeQuestion, reorderQuestion }) => {
   const [questionsData, setQuestionsData] = useQuestionsData();
-  const [value,setValue] = useState("");
+  const [value, setValue] = useState("");
 
   const handleAddNewAnswer = useCallback(
     (value) => {
       const questions = [...questionsData];
       questions[formId].answers.push(value);
       setQuestionsData(questions);
-      setValue("")
+      setValue("");
     },
     [formId, questionsData, setQuestionsData]
   );
 
   const onBlur = useCallback(
     (e) => {
-      const answers =  questionsData[formId].answers;
+      const answers = questionsData[formId].answers;
       if (!answers.includes(e.target.value) && e.target.value.length > 0) {
         handleAddNewAnswer(e.target.value);
       }
@@ -53,14 +53,14 @@ const QuestionaireForm = ({ formId, removeQuestion,reorderQuestion }) => {
     questions[formId].answers.splice(i, 1);
     setQuestionsData(questions);
   };
-  
+
   const handleReorderAnswers = (items, index, direction) => {
-    const newOrderedItems = reorder(items, index, direction)
+    const newOrderedItems = reorder(items, index, direction);
     const questions = [...questionsData];
 
     questions[formId].answers = newOrderedItems;
     setQuestionsData(questions);
-  }
+  };
 
   return (
     <form className={styles.card}>

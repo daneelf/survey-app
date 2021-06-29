@@ -1,13 +1,48 @@
 import styles from "./App.module.css";
 import Button from "./components/Button/Button";
 import QuestionaireForm from "./views/QuestionaireForm/QuestionaireForm";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useQuestionsData } from "./context/LocalContext";
 import { reorder } from "./helpers/reorder";
+import axios from 'axios';
+const AUTOSAVE_INTERVAL = 1000;
 
 function App() {
   const [questionaireFormCount, setQuestionaireFormCount] = useState(0);
   const [questionsData, setQuestionsData] = useQuestionsData();
+
+  useEffect(() => {
+    console.log('only once..?');
+    if (questionsData.length <= 0) {
+      axios
+        .get("/api/questions")
+        .then((response) => {
+          console.log(response);
+          setQuestionsData(response.data.data)
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  }, []);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (questionsData.length > 0) {
+        console.log("saved..?");
+        axios
+          .post("/api/questionnaire", questionsData)
+          .then(function (response) {
+            console.log(response);
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+      }
+    }, AUTOSAVE_INTERVAL);
+    return () => clearTimeout(timer);
+  }, [questionsData]);
+
 
   const addQuestion = () => {
     setQuestionaireFormCount(questionaireFormCount + 1);
@@ -21,15 +56,17 @@ function App() {
   };
 
   const handleReorderQuestions = (items, index, direction) => {
-    const newOrderedItems = reorder(items, index, direction)
+    const newOrderedItems = reorder(items, index, direction);
     setQuestionsData(newOrderedItems);
-  }
+  };
 
   return (
     <div className={styles.list}>
-      {questionsData.length === 0 && 
-        <div className={styles['empty-list']}>Click the button to add a new question.</div>
-      }
+      {questionsData.length === 0 && (
+        <div className={styles["empty-list"]}>
+          Click the button to add a new question.
+        </div>
+      )}
       {questionsData?.map((_, i) => {
         return (
           <QuestionaireForm
