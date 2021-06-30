@@ -2,7 +2,6 @@ import {UP,DOWN} from '../constants';
 
 export const reorder = (items, index, direction) => {
   const position = index;
-  console.log(position);
   if (position < 0) {
     throw new Error("Given item not found.");
   } else if (

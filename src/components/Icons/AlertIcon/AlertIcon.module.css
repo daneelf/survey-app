@@ -1,0 +1,19 @@
+.alert-icon {
+    margin-right: 28px;
+}
+
+.square {
+  height: 8px;
+  width: 8px;
+  background-color: rgb(241, 86, 93);
+}
+
+.circle {
+  height: 32px;
+  width: 32px;
+  background-color: rgb(255, 241, 240);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+    align-items: center;
+}

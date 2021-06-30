@@ -4,45 +4,52 @@ import QuestionaireForm from "./views/QuestionaireForm/QuestionaireForm";
 import { useState, useEffect } from "react";
 import { useQuestionsData } from "./context/LocalContext";
 import { reorder } from "./helpers/reorder";
-import {debounce} from "./helpers/debounce";
+import { debounce } from "./helpers/debounce";
 import axios from "axios";
-const AUTOSAVE_INTERVAL = 1000;
+import Alert from "./components/Alert/Alert";
+import AlertIcon from "./components/Icons/AlertIcon/AlertIcon";
 
 function App() {
   const [questionaireFormCount, setQuestionaireFormCount] = useState(0);
   const [questionsData, setQuestionsData] = useQuestionsData();
-
+  const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
   useEffect(() => {
-    console.log("only once..?");
     if (questionsData.length <= 0) {
       axios
         .get("/api/questions")
         .then((response) => {
-          console.log(response);
           setQuestionsData(response.data.data);
         })
         .catch((error) => {
-          console.log(error);
+          if (error.response?.data?.error) {
+            setError(error.response.data.error);
+          } else {
+            setError(error.message);
+          }
         });
     }
-  },[]);
+  }, []);
 
   useEffect(() => {
-
     if (questionsData.length >= 0) {
       debounce(
         axios
           .post("/api/questionnaire", questionsData)
-          .then(function (response) {
-            console.log('post response',response);
+          .then((response) => {
+            setMessage(response.data.message);
           })
-          .catch(function (error) {
-            console.log(error);
+          .catch((error) => {
+            if (error.response?.data?.error) {
+              setError(error.response.data.error);
+            } else {
+              setError(error.message);
+            }
           }),
         3000
       );
     }
-  }, [debounce, questionsData]);
+  }, [questionsData]);
 
   const addQuestion = () => {
     setQuestionaireFormCount(questionaireFormCount + 1);
@@ -61,24 +68,40 @@ function App() {
   };
 
   return (
-    <div className={styles.list}>
-      {questionsData.length === 0 && (
-        <div className={styles["empty-list"]}>
-          Click the button to add a new question.
-        </div>
+    <>
+      {error && (
+        <Alert>
+          <AlertIcon />
+          {error}
+        </Alert>
       )}
-      {questionsData?.map((_, i) => {
-        return (
-          <QuestionaireForm
-            key={i}
-            formId={i}
-            removeQuestion={() => handleRemoveQuestionForm(i)}
-            reorderQuestion={handleReorderQuestions}
-          />
-        );
-      })}
-      <Button onClick={addQuestion} />
-    </div>
+      {questionsData.length === 10 && (
+        <Alert>
+          <AlertIcon />
+          You cannot add more than 10 questions
+        </Alert>
+      )}
+      <div className={styles.list}>
+        {questionsData.length === 0 && (
+          <div className={styles["empty-list"]}>
+            Click the button to add a new question.
+          </div>
+        )}
+        {questionsData.length > 0 &&
+          questionsData?.map((_, i) => {
+            return (
+              <QuestionaireForm
+                key={i}
+                formId={i}
+                removeQuestion={() => handleRemoveQuestionForm(i)}
+                reorderQuestion={handleReorderQuestions}
+              />
+            );
+          })}
+
+        <Button disabled={questionsData.length === 10} onClick={addQuestion} />
+      </div>
+    </>
   );
 }
 
