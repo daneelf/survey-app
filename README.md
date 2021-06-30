@@ -1,6 +1,8 @@
-## Pollfish researcher assesement
+## Survey app
 
-Tomorrow assignment using CRA, Materia UI and styled components.
+This is a project based on an assesement.
+User can add,read,update,reorder questions and their answers
+in order to qreate a new survey
 ## Build With
 
 * [React](https://reactjs.org/)
@@ -19,9 +21,7 @@ npm install
 npm run start
 ```
 
-_**Don't forget to start the API server too, otherwise you'll get an error ;)**_
-
-### Features implemented
+### Next Steps
 * Add, create, read, update,reorder questionaire form
 * Add, create, read, update quaistionnaire title
 * Add, create, read, update,reorder quaistionnaire answers
