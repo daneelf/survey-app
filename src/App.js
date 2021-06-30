@@ -4,7 +4,8 @@ import QuestionaireForm from "./views/QuestionaireForm/QuestionaireForm";
 import { useState, useEffect } from "react";
 import { useQuestionsData } from "./context/LocalContext";
 import { reorder } from "./helpers/reorder";
-import axios from 'axios';
+import {debounce} from "./helpers/debounce";
+import axios from "axios";
 const AUTOSAVE_INTERVAL = 1000;
 
 function App() {
@@ -12,37 +13,36 @@ function App() {
   const [questionsData, setQuestionsData] = useQuestionsData();
 
   useEffect(() => {
-    console.log('only once..?');
+    console.log("only once..?");
     if (questionsData.length <= 0) {
       axios
         .get("/api/questions")
         .then((response) => {
           console.log(response);
-          setQuestionsData(response.data.data)
+          setQuestionsData(response.data.data);
         })
         .catch((error) => {
           console.log(error);
         });
     }
-  }, []);
+  },[]);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      if (questionsData.length > 0) {
-        console.log("saved..?");
+
+    if (questionsData.length >= 0) {
+      debounce(
         axios
           .post("/api/questionnaire", questionsData)
           .then(function (response) {
-            console.log(response);
+            console.log('post response',response);
           })
           .catch(function (error) {
             console.log(error);
-          });
-      }
-    }, AUTOSAVE_INTERVAL);
-    return () => clearTimeout(timer);
-  }, [questionsData]);
-
+          }),
+        3000
+      );
+    }
+  }, [debounce, questionsData]);
 
   const addQuestion = () => {
     setQuestionaireFormCount(questionaireFormCount + 1);
