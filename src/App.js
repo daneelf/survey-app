@@ -14,19 +14,25 @@ function App() {
   const [questionsData, setQuestionsData] = useQuestionsData();
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
+
   useEffect(() => {
     if (questionsData.length <= 0) {
       axios
         .get("/api/questions")
         .then((response) => {
-          setQuestionsData(response.data.data);
+          if (response.status === 200) {
+            return setQuestionsData(response.data.data);
+          }
+          return setError(response.statusText)
         })
         .catch((error) => {
-          if (error.response?.data?.error) {
-            setError(error.response.data.error);
-          } else {
-            setError(error.message);
+          if (error.response.status === 500) {
+            return setError(error.response.statusText);
           }
+          if (error.response?.data?.error) {
+            return setError(error.response.data.error);
+          }
+          return setError(error.message);
         });
     }
   }, []);
