@@ -1,61 +1,15 @@
 import styles from "./App.module.css";
 import Button from "./components/Button/Button";
 import QuestionaireForm from "./views/QuestionaireForm/QuestionaireForm";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useQuestionsData } from "./context/LocalContext";
 import { reorder } from "./helpers/reorder";
-import { debounce } from "./helpers/debounce";
-import axios from "axios";
 import Alert from "./components/Alert/Alert";
 import AlertIcon from "./components/Icons/AlertIcon/AlertIcon";
 
 function App() {
   const [questionaireFormCount, setQuestionaireFormCount] = useState(0);
   const [questionsData, setQuestionsData] = useQuestionsData();
-  const [message, setMessage] = useState("");
-  const [error, setError] = useState("");
-
-  useEffect(() => {
-    if (questionsData.length <= 0) {
-      axios
-        .get("/api/questions")
-        .then((response) => {
-          if (response.status === 200) {
-            return setQuestionsData(response.data.data);
-          }
-          return setError(response.statusText)
-        })
-        .catch((error) => {
-          if (error.response.status === 500) {
-            return setError(error.response.statusText);
-          }
-          if (error.response?.data?.error) {
-            return setError(error.response.data.error);
-          }
-          return setError(error.message);
-        });
-    }
-  }, []);
-
-  useEffect(() => {
-    if (questionsData.length >= 0) {
-      debounce(
-        axios
-          .post("/api/questionnaire", questionsData)
-          .then((response) => {
-            setMessage(response.data.message);
-          })
-          .catch((error) => {
-            if (error.response?.data?.error) {
-              setError(error.response.data.error);
-            } else {
-              setError(error.message);
-            }
-          }),
-        3000
-      );
-    }
-  }, [questionsData]);
 
   const addQuestion = () => {
     setQuestionaireFormCount(questionaireFormCount + 1);
@@ -75,12 +29,6 @@ function App() {
 
   return (
     <>
-      {error && (
-        <Alert>
-          <AlertIcon />
-          {error}
-        </Alert>
-      )}
       {questionsData.length === 10 && (
         <Alert>
           <AlertIcon />
